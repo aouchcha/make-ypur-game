@@ -47,7 +47,8 @@
 } */
 
 body {
-    background-image: url(wp9116463.webp);
+    /* background-image: url(wp9116463.webp); */
+    background-color: black;
     padding: 0;
     margin: 0;
     height: 100vh;
@@ -70,12 +71,47 @@ body {
     flex-direction: column;
     width: fit-content;
     height: fit-content;
+    top: 0px;
 }
 
 .alien {
     height: 30px;
     width: 30px;
     padding: 10px;
+}
+
+#buttons{
+    top: 0%;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    border: solid 1px white;
+    position: absolute;
+    transform: translateY(50%);
+}
+
+#Infos {
+    display: flex;
+    flex-direction: column;
+    color: white;
+    bottom: 0px;
+    position: absolute;
+
+}
+
+.hearts{
+    height: 20px;
+    width: 20px;
+    /* align-items: center; */
+    /* display: flex; */
+    /* flex-direction: row; */
+}
+
+.game_over{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 #hero {

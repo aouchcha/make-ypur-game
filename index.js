@@ -1,33 +1,48 @@
-//Variables
+const state = {
+    Level: 2,
+    gameActive: false,
+    score: 0
+};
+
 document.addEventListener('DOMContentLoaded', () => {
-    const game = document.getElementById('game');
-    const game_width = document.getElementById('game').getBoundingClientRect().width;
-   
-    const villans = document.getElementById('villans');
-
-    const hero = document.getElementById('hero');
-    CreateAliens(villans);
-    CreateHero(hero);
-    hero.style.transform = `translateX(${game_width/2}px) translateY(${0}px)`
-
-    
-    
-    MoveAliens(hero, game_width, villans);
-
-    
-    // const laser = hero.querySelector('.laser');
-    document.addEventListener('keydown', (e) => {
-        MoveHero(e, game_width, hero, game);
-    });
+    UpdateLives(0, state);
+    Game(state.Level, state);
 });
 
+// Fix the Game function
+export function Game(Level, state) {
+    state.gameActive = true;
+    document.getElementById('Level').innerHTML = `Level = ${Level}`;
+    document.getElementById('score').innerHTML = `Score = ${state.score}`
 
+    const game = document.getElementById('game');
+    const game_width = game.getBoundingClientRect().width;
+    const villans = document.getElementById('villans');
+    const hero = document.getElementById('hero');
 
-//Create The Aliens
+    // Clear previous game state
+    villans.innerHTML = '';
+    hero.innerHTML = '';
+
+    // Initialize game elements
+    CreateAliens(villans);
+    CreateHero(hero);
+    hero.style.transform = `translateX(${game_width / 2}px) translateY(${0}px)`;
+
+    // Add event listener
+    document.addEventListener('keydown', (e) => {
+        MoveHero(e, game_width, hero, game, state);
+    });
+
+    // Start alien movement
+    MoveAliens(hero, game_width, villans, state);
+}
+
+// Create The Aliens
 export function CreateAliens(villans) {
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 5; i++) {
         const row = document.createElement('div');
-        for (let j = 0; j < 15; j++) {
+        for (let j = 0; j < 10; j++) {
             const alien = document.createElement('img');
             alien.classList.add('alien');
             alien.src = 'alien.png';
@@ -37,108 +52,209 @@ export function CreateAliens(villans) {
     }
 }
 
-//Move The Aliens
-export function MoveAliens(hero, game_width, villans) {
-    let alien_position_x = villans.getBoundingClientRect().left;
-    let alien_position_y = villans.getBoundingClientRect().top;
-    let hero_position_y = hero.getBoundingClientRect().top;
-    let Check = 0
-    const steep_x = 5;
-    const steep_y = 10;
+// Move The Aliens
+export function MoveAliens(hero, game_width, villans, state) {
+    let alien_position_x = 0;
+    let alien_position_y = 0;
+    let Check = 0;
+    const steep_x = 5 * state.Level;
+    const steep_y = 10 * state.Level;
     let direction = 1;
-    const rightedge = game_width-villans.getBoundingClientRect().width;
+    const rightedge = game_width - villans.getBoundingClientRect().width;
+
     function Move() {
+        const hearts = Array.from(document.querySelectorAll('.hearts'));
+        console.log("heart_lenght_inThe_start_of_the_moveAlien => ", hearts.length);
+        if (hearts.length == 0) {
+            GameOver(state)
+        }
+        if (!state.gameActive) return;
+
         if (alien_position_x >= rightedge) {
-           direction = -1
-           Check ++
-        }else if (alien_position_x <= 0) {
-            direction = 1
+            direction = -1;
+            Check++;
+        } else if (alien_position_x <= 0) {
+            direction = 1;
         }
 
-        alien_position_x += (direction * steep_x)
-        
-        if( Check == 3) {
-            alien_position_y += steep_y
-            Check = 0
+        alien_position_x += direction * steep_x;
+
+        if (Check == 3) {
+            alien_position_y += steep_y;
+            Check = 0;
         }
-        
-        villans.style.transform = `translateX(${alien_position_x}px) translateY(${alien_position_y}px)`
 
-        if (villans.getBoundingClientRect().bottom  <= hero_position_y) {
-            requestAnimationFrame(Move)
-            
-        }else {
-            alert("Game Over")
-        }
-    }
-    Move()
-}
+        villans.style.transform = `translateX(${alien_position_x}px) translateY(${alien_position_y}px)`;
 
-//Create The Hero
-export function CreateHero(hero) {
-    const space_ship = document.createElement('img');
-    space_ship.src = 'ship.png'; 
-    space_ship.classList.add('hero');
-    hero.appendChild(space_ship);
-}
+        const alienBottom = villans.getBoundingClientRect().bottom;
+        const heroTop = hero.getBoundingClientRect().top;
 
-//Move The Hero
-export function MoveHero(e, game_width, hero, game) {
-    const space_ship = hero.querySelector('.hero');
-    let hero_position_x = space_ship.getBoundingClientRect().left;
-    hero.style.bottom = `0px`
-    const steep = 10;
-    if (e.key === 'ArrowRight') {
-        if (hero_position_x < game_width - space_ship.getBoundingClientRect().width) {
-            hero_position_x += steep;
-            hero.style.transform = `translateX(${hero_position_x}px)`
-        }
-    } else if (e.key === 'ArrowLeft') {
-        if (hero_position_x > 0) {
-            hero_position_x -= steep;
-            hero.style.transform = `translateX(${hero_position_x}px)`
-        }
-    }else if (e.key == ' ') {
-        CreateLaser(hero, hero_position_x, game)
-        return
-        // MoveLaser(hero)
-    }
-}
-
-// Create Laser
-export function CreateLaser(hero, hero_position_x, game) {
-    const laser = document.createElement('img');
-    laser.src = 'laser.png'; 
-    laser.classList.add('laser');
-
-    const initialBottom = hero.getBoundingClientRect().top; 
-    console.log("laser_y", initialBottom);
-    console.log("laser_x",hero_position_x)
-    
-    laser.style.transform = `translateX(${hero_position_x}px) translateY(${initialBottom})`;
-
-    game.appendChild(laser);
-
-    MoveLaser(laser, hero,hero_position_x);
-}
-
-// Move Laser
-export function MoveLaser(laser, hero, laser_position_x) {
-    let laser_position_y = hero.getBoundingClientRect().top;
-
-    function Move() {
-        if (laser_position_y >= window.innerHeight) {
-            laser.remove(); 
+        if (alienBottom >= heroTop) {
+            Pause(state)
             return;
         }
-
-        laser_position_y -= 5
-        
-        laser.style.transform = `translateY(${laser_position_y}px) translateX(${laser_position_x}px)`;
 
         requestAnimationFrame(Move);
     }
 
     Move();
 }
+//Pause
+export function Pause(state) {
+    state.gameActive = false 
+    document.querySelector('#buttons').style.display = 'flex'
+            const butts = document.querySelectorAll('button')
+            butts.forEach((butt) => {
+                butt.addEventListener('click', (e) => {
+                    const choice = e.target.getAttribute('data-choice')
+                    if (choice == 'C') {
+                        UpdateLives(-1, state);
+                    }else if (choice == 'R') {
+                        state.score = 0
+                        UpdateLives(0, state);
+                        state.Level = 1
+                    }
+                    Game(state.Level, state)
+                    document.querySelector('#buttons').style.display = 'none'
 
+                })
+            })
+}
+// Create The Hero
+export function CreateHero(hero) {
+    const space_ship = document.createElement('img');
+    space_ship.src = 'ship.png';
+    space_ship.classList.add('hero');
+    hero.appendChild(space_ship);
+}
+
+// Move The Hero
+export function MoveHero(e, game_width, hero, game, state) {
+    const space_ship = hero.querySelector('.hero');
+    let hero_position_x = space_ship.getBoundingClientRect().left;
+    const Infos_width = document.getElementById('Infos').getBoundingClientRect().width;
+    const steep = 10;
+
+    if (e.key === 'ArrowRight') {
+        if (hero_position_x < game_width - space_ship.getBoundingClientRect().width) {
+            hero_position_x += steep;
+            hero.style.transform = `translateX(${hero_position_x}px)`;
+        }
+    } else if (e.key === 'ArrowLeft') {
+        if (hero_position_x > Infos_width) {
+            hero_position_x -= steep;
+            hero.style.transform = `translateX(${hero_position_x}px)`;
+        }
+    } else if (e.key === ' ') {
+        CreateLaser(hero, hero_position_x, game, state);
+        return;
+    }
+}
+
+// Create Laser
+export function CreateLaser(hero, hero_position_x, game, state) {
+    const laser = document.createElement('img');
+    laser.src = 'laser.png';
+    laser.classList.add('laser');
+
+    const initialBottom = hero.getBoundingClientRect().top;
+    laser.style.transform = `translateX(${hero_position_x}px) translateY(${initialBottom}px)`;
+
+    game.appendChild(laser);
+
+    MoveLaser(laser, hero, hero_position_x, state);
+}
+
+// Move Laser and Destroy The Aliens
+export function MoveLaser(laser, hero, laser_position_x, state) {
+    let laser_position_y = hero.getBoundingClientRect().top;
+
+    function Move() {
+        if (!state.gameActive) {
+            laser.remove();
+            return;
+        }
+
+        if (laser_position_y <= 0) {
+            laser.remove();
+            return;
+        }
+
+        const aliens = Array.from(document.querySelectorAll('.alien'));
+        const laserRect = laser.getBoundingClientRect();
+
+        for (let i = 0; i < aliens.length; i++) {
+            if (!aliens[i].isConnected) continue;
+
+            const alienRect = aliens[i].getBoundingClientRect();
+            if (
+                laserRect.top <= alienRect.bottom &&
+                laserRect.bottom >= alienRect.top &&
+                laserRect.left <= alienRect.right &&
+                laserRect.right >= alienRect.left
+            ) {
+                laser.remove();
+                aliens[i].remove();
+                state.score += (10 * state.Level)
+                document.getElementById('score').innerHTML = `Score = ${state.score}`
+
+                if (document.querySelectorAll('.alien').length === 0) {
+                    levelComplete(state);
+                }
+                return;
+            }
+        }
+
+        laser_position_y -= 5;
+        laser.style.transform = `translate(${laser_position_x}px, ${laser_position_y}px)`;
+        requestAnimationFrame(Move);
+    }
+
+    Move();
+}
+
+// Level Complete
+function levelComplete(state) {
+    state.Level++;
+    Game(state.Level, state);
+    document.getElementById('Level').innerHTML = `Level = ${state.Level}`;
+}
+
+// Update Lives
+export function UpdateLives(index, state) {
+    const Lives = document.getElementById('lives');
+    
+    if (index === 0) {
+        Lives.innerHTML = '';
+        for (let i = 0; i < 3; i++) {
+            const heart = document.createElement('img');
+            heart.src = 'lives.png';
+            heart.className = 'hearts';
+            Lives.appendChild(heart);
+        }
+    } else if (index < 0) {
+        const hearts = Array.from(document.querySelectorAll('.hearts'));
+        console.log("heart_lenght_before_reduce => ", hearts.length);
+
+        if (hearts.length > 0) {
+            hearts[hearts.length - 1].remove();
+            return
+        } else {
+            GameOver(state);
+        }
+    }
+
+}
+
+// Game Over
+export function GameOver(state) {
+    state.gameActive = false;
+    state.Level = 1;
+    const game_container = document.getElementById('game');
+    game_container.innerHTML = `
+        <div class="game_over">
+            <p>Game Over</p>
+            <button onclick="location.reload()">Try Again</button>
+        </div>`;
+    game_container.style.backgroundColor = 'white';
+}
