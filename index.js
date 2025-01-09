@@ -1,5 +1,5 @@
 const state = {
-    Level: 2,
+    Level: 1,
     gameActive: false,
     score: 0
 };
@@ -46,6 +46,7 @@ export function CreateAliens(villans) {
             const alien = document.createElement('img');
             alien.classList.add('alien');
             alien.src = 'alien.png';
+            alien.dataset.black = 'white'
             row.appendChild(alien);
         }
         villans.appendChild(row);
@@ -64,10 +65,7 @@ export function MoveAliens(hero, game_width, villans, state) {
 
     function Move() {
         const hearts = Array.from(document.querySelectorAll('.hearts'));
-        console.log("heart_lenght_inThe_start_of_the_moveAlien => ", hearts.length);
-        if (hearts.length == 0) {
-            GameOver(state)
-        }
+        console.log("heart_lenght_after_reduce => ", hearts.length);
         if (!state.gameActive) return;
 
         if (alien_position_x >= rightedge) {
@@ -108,15 +106,18 @@ export function Pause(state) {
                 butt.addEventListener('click', (e) => {
                     const choice = e.target.getAttribute('data-choice')
                     if (choice == 'C') {
+                        console.log("Ana hna 1");
+                        
                         UpdateLives(-1, state);
                     }else if (choice == 'R') {
+                        console.log("Ana Hna 2");
+                        
                         state.score = 0
                         UpdateLives(0, state);
                         state.Level = 1
                     }
-                    Game(state.Level, state)
                     document.querySelector('#buttons').style.display = 'none'
-
+                    Game(state.Level, state)
                 })
             })
 }
@@ -184,7 +185,9 @@ export function MoveLaser(laser, hero, laser_position_x, state) {
         const laserRect = laser.getBoundingClientRect();
 
         for (let i = 0; i < aliens.length; i++) {
-            if (!aliens[i].isConnected) continue;
+            // console.log(i);
+            
+            if (!aliens[i].isConnected || aliens[i].dataset.black == 'black') continue;
 
             const alienRect = aliens[i].getBoundingClientRect();
             if (
@@ -193,8 +196,10 @@ export function MoveLaser(laser, hero, laser_position_x, state) {
                 laserRect.left <= alienRect.right &&
                 laserRect.right >= alienRect.left
             ) {
+                console.log(aliens[i],i);
                 laser.remove();
-                aliens[i].remove();
+                aliens[i].src = 'black.png'
+                aliens[i].dataset.black = 'black'
                 state.score += (10 * state.Level)
                 document.getElementById('score').innerHTML = `Score = ${state.score}`
 
@@ -205,7 +210,7 @@ export function MoveLaser(laser, hero, laser_position_x, state) {
             }
         }
 
-        laser_position_y -= 5;
+        laser_position_y -= 7;
         laser.style.transform = `translate(${laser_position_x}px, ${laser_position_y}px)`;
         requestAnimationFrame(Move);
     }
@@ -233,15 +238,20 @@ export function UpdateLives(index, state) {
             Lives.appendChild(heart);
         }
     } else if (index < 0) {
-        const hearts = Array.from(document.querySelectorAll('.hearts'));
+        const hearts = Array.from(Lives.querySelectorAll('.hearts'));
         console.log("heart_lenght_before_reduce => ", hearts.length);
 
         if (hearts.length > 0) {
-            hearts[hearts.length - 1].remove();
-            return
+            console.log("update");
+            
+            hearts[0].remove();
+
         } else {
+            console.log("game over");
+            
             GameOver(state);
         }
+
     }
 
 }

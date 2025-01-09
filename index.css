@@ -67,8 +67,9 @@ body {
 
 #villans {
     position: absolute;
-    display: flex;
-    flex-direction: column;
+    /* display: flex; */
+    /* flex-direction: column; */
+    flex-wrap: wrap;
     width: fit-content;
     height: fit-content;
     top: 0px;
