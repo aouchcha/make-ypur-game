@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space invader</title>
+    <link rel="stylesheet" href="game1.css">
+</head>
+
+<body>
+    <div class="canvas" id="canvas">
+        <p id="var"></p>
+        <div id="stuff">
+            <div id="level">level : 1</div>
+            <br>
+            <br>
+            <div id="score">Score: 0</div>
+            <br>
+            <div id="timer">Time: 0s</div>
+            <br>
+            <br>
+            <div id="lives">
+                <img src="lives.png" alt="lives" id="heart">
+                <p id="num">3</p>
+            </div>
+        </div>
+        <buttton class="pause" id="pause">
+            <p>❚❚</p>
+        </buttton>
+        <div id="menu" class="Menu">
+            <div id="MenuContent">
+                <button class="play" id="continue">◼ Continue</button>
+                <button class="play" id="restart">⟳ Restart</button>
+                <button class="play" id="instructions">Instructions</button>
+                <div id="instruction" class="instruction">
+                    <p>The object of the game is to destroy all the alien invaders before they reach the bottom of the
+                        screen.</p>
+                    <p>You can move your spaceship left and right using the left and right arrow keys.</p>
+                    <p>Press the spacebar to fire lasers at the aliens.</p>
+                    <p>You have three lives. If an alien hits your spaceship, you lose a life.</p>
+                    <p>If you lose all three lives or an alien reaches the bottom, you lose the game.</p>
+                    <p>Finish the level 2 to win the game.</p>
+                </div>
+            </div>
+        </div>
+        <!-- <button class="start" id="start">▶ Start</button> -->
+        <div class="gameOver" id="gameOver">
+            <pre>Game Over ,You Lost !!
+Press r to restart the game</pre>
+        </div>
+        <div class="gameWinner" id="win_win">
+            <pre>Congratulations, You win the game !!
+Press r to restart the game</pre>
+        </div>
+        <div id="Enemies"></div>
+        <img src="ship.png" alt="ship" id="ship">
+    </div>
+    <script src="game1.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,329 @@
+body {
+    top: 0;
+    margin: 0;
+    padding: 0;
+    background-color: black;
+    overflow: hidden;
+}
+
+.canvas {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    background-image: url('spaceBJ1.jpg'); 
+    background-color: white;
+    background-size: cover;
+    top: 0;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(255, 255, 255);
+    overflow: hidden;
+}
+
+#lives {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: row;
+}
+
+#lives img {
+    animation: FPS 0.1s infinite; 
+}
+
+#level {
+    /* left: 500px; */
+    z-index: 1;
+    color: black;
+    font-size: 20px;
+    font-family: 'times new roman';
+    font-weight: 600;
+    text-shadow: 0px 0px 10px rgb(255, 255, 255);
+}
+
+
+
+img {
+    z-index: 1;
+    position: relative;
+    width: 40px;
+    height: 40px;
+}
+
+#var{
+    color: white;
+    position: absolute;
+     background-color: white; 
+}
+
+#ship {
+    will-change: transform;
+}
+
+#Enemies{
+    will-change: transform;
+    /* left: 1%; */
+}
+
+.bullet, .alien_bullet{
+    will-change: transform;
+}
+
+.play {
+     /* animation: FPS 0.1 infinite;  */
+    animation: FPS1 1s infinite;
+
+    display: table;
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+    height: 50px;
+    border: 1px solid rgb(0, 0, 0);
+    background-color: rgb(44, 87, 204);
+    color: aliceblue;
+    font-size: 20px;
+    font-family: 'times new roman';
+    font-weight: 600;
+    border-radius: 50px;
+    cursor: pointer;
+     /* transition: ease-in-out 0.2s;  */
+}
+
+.start {
+    position: absolute;
+    z-index: 1;
+    display: block;
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+    height: 50px;
+     border: 1px solid rgb(0, 0, 0); 
+    border: none;
+    background-color: rgb(14, 47, 139);
+    color: aliceblue;
+    font-size: 20px;
+    font-family: 'times new roman';
+    font-weight: 600;
+    border-radius: 50px;
+    cursor: pointer;
+     /* transition: ease-in-out 0.2s;  */
+}
+
+.start:hover {
+    background-color: rgb(255, 255, 255);
+    color: black;
+     /* transition: ease-in-out 0.3s;  */
+    box-shadow: 0px 0px 200px 5px rgb(14, 47, 139);
+}
+
+.play:hover {
+    background-color: rgb(255, 255, 255);
+    color: black;
+     /* transition: ease-in-out 0.3s;  */
+    box-shadow: 0px 0px 200px 5px rgb(14, 47, 139);
+}
+
+.pause {
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 50px;
+    height: 40px;
+    display: table;
+    position: absolute;
+    border: 1px solid rgb(0, 58, 165);
+    background-color: rgb(255, 255, 255);
+    color: rgb(0, 14, 216);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+ #Enemis{
+    top: 0;
+    left: 20px;
+} 
+
+.pause p {
+    text-align: center;
+    align-items: center;
+}
+
+.pause:hover {
+    background-color: rgb(14, 47, 139);
+    color: rgb(255, 255, 255);
+     /* transition: ease-in-out 0.3s;  */
+    box-shadow: 0px 0px 200px 5px rgb(255, 255, 255);
+}
+
+.Menu {
+    display: none;
+    position: relative;
+    z-index: 1;
+    padding: 10px;
+    background-color: rgb(0, 0, 0);
+    border: 1px solid rgb(255, 255, 255);
+    border-radius: 15px;
+    word-wrap: break-word; 
+    width: min-content;
+    height: min-content;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.MenuContent {
+    display: none;
+}
+
+.instruction {
+    display: none;
+}
+
+#stuff{
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    height: fit-content;
+    top: 0%;
+    right: 0%;
+    position: absolute;
+}
+
+#Error{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 100px;
+}
+
+.instructionsBar {
+    display: block;
+    color: aliceblue;
+    font-display: 'times new roman';
+    word-wrap: break-word;
+    text-align: center;
+}
+
+#score {
+     /* left: 500px; */
+    z-index: 1;
+    color: black;
+    font-size: 20px;
+    font-family: 'times new roman';
+    font-weight: 600;
+    text-shadow: 0px 0px 10px rgb(255, 255, 255);
+}
+
+#lives{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#timer {
+    left: 400px;
+    z-index: 1;
+    color: black;
+    font-size: 20px;
+    font-family: 'times new roman';
+    font-weight: 600;
+    text-shadow: 0px 0px 10px rgb(255, 255, 255);
+}
+
+.gameOver {
+    display: none;
+     position: absolute; 
+     z-index: 1; 
+    padding: 10px;
+    background-color: rgb(0, 0, 0);
+    border: 1px solid rgb(255, 255, 255);
+    color: aliceblue;
+    text-align: center;
+    border-radius: 15px;
+    word-wrap: break-word;
+    width: min-content;
+    height: min-content;
+    justify-content: center;
+    align-items: center;
+    margin: 50px auto;
+}
+
+.gameWinner{
+    display: none;
+     position: absolute; 
+     z-index: 1; 
+
+    padding: 10px;
+    background-color: rgb(0, 0, 0);
+    border: 1px solid rgb(255, 255, 255);
+    color: aliceblue;
+    text-align: center;
+    border-radius: 15px;
+    word-wrap: break-word;
+    width: min-content;
+    height: min-content;
+    justify-content: center;
+    align-items: center;
+    margin: 50px auto;
+}
+
+
+@keyframes FPS {
+    from {
+        scale: 1;
+    }
+    to{
+        scale: 1.1;
+    }
+}
+@keyframes FPS1 {
+    from {
+        scale: 1;
+    }
+    to{
+        scale: 1.01;
+    }
+}
+
+
+
+@media screen and (max-width: 769px) {
+    .start {
+        width: 50px;
+        height: 20px;
+        font-size: x-small;
+        align-items: center;
+        justify-content: center;
+        display: flex;
+
+    }
+    .canvas {
+        height: 100%;
+        width: 100%;
+        font-size: small;
+        overflow: hidden;
+    }
+
+    #score, #level, #timer {
+        width: 50px;
+        height: 20px;
+        font-size: x-small;
+        align-items: center;
+        justify-content: center;
+        display: flex;
+    }
+
+    #pause{
+        width: 10px;
+        height: 10px;
+    }
+
+    .alien{
+        width: 20px;
+        height: 20px;
+        padding: 0px;
+    }
+
+}
